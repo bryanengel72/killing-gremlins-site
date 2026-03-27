@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-bg: #FDFAF4;
+  --color-brand-purple: #2D1B69;
+  --color-brand-purple-dark: #1A0B3B;
+  --color-brand-text: #2D1B69;
+  --color-brand-text-muted: #4A3A8A;
+  --color-brand-gold: #C9A030;
+  --color-brand-gold-dark: #A8821F;
+  --color-brand-gold-light: #D4AF45;
+  --color-brand-surface: #FFFFFF;
+
+  --font-sans: "Clash Display", ui-sans-serif, system-ui, sans-serif;
+  --font-drama: "Cormorant Garamond", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply border border-brand-gold/20 bg-white/60 backdrop-blur-xl shadow-[0_20px_25px_-5px_rgba(45,27,105,0.05),0_8px_10px_-6px_rgba(45,27,105,0.05)];
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FDFAF4;
+}
+::-webkit-scrollbar-thumb {
+  background: #C9A030;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A8821F;
+}
+
+::selection {
+  background-color: rgba(201, 160, 48, 0.3);
+  color: #D4AF45;
+}
