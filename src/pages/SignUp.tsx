@@ -17,6 +17,10 @@ export const SignUp: React.FC = () => {
       setError('Please configure your Supabase Anon Key in the environment variables to sign up.');
       return;
     }
+    if (!name.trim()) {
+      setError('Please enter your name.');
+      return;
+    }
     setError(null);
     setLoading(true);
 
@@ -26,7 +30,7 @@ export const SignUp: React.FC = () => {
         password,
         options: {
           data: {
-            name: name || email.split('@')[0],
+            name: name.trim(),
           }
         }
       });
@@ -77,8 +81,9 @@ export const SignUp: React.FC = () => {
                   id="name"
                   name="name"
                   type="text"
+                  required
                   className="appearance-none relative block w-full px-4 py-3 border border-brand-gold/30 placeholder-brand-text-muted/60 text-brand-purple rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-gold focus:border-transparent sm:text-sm bg-white/80"
-                  placeholder="First name (optional)"
+                  placeholder="Full name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
