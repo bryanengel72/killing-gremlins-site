@@ -62,6 +62,18 @@ export const CalmNow: React.FC = () => {
     return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20C/C3_v1.0%20TP3%20Execution%20Identity%20Rehearsal.m4a';
   };
 
+  const getReframeText = () => {
+    if (engineState.id === 'A') return '"This is a stress response, not a threat. I am safe."';
+    if (engineState.id === 'B') return '"I can gently return my focus to the task at hand."';
+    return '"I am ready and capable. My mind is sharp."';
+  };
+
+  const getPhysicalCueText = () => {
+    if (engineState.id === 'A') return 'Feet flat on the floor. Drop your shoulders.';
+    if (engineState.id === 'B') return 'Take a deep breath and re-center your gaze.';
+    return 'Sit up straight. Visualize your next successful step.';
+  };
+
   const toggleAudio = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -74,18 +86,22 @@ export const CalmNow: React.FC = () => {
   };
 
   if (completed) {
-    const isRegulated = postScore <= 5;
+    let title = "Great job.";
+    let subtitle = "You took control. Returning to dashboard...";
+
+    if (preScore <= 5) {
+      title = "Stay steady.";
+      subtitle = "Good tune-up. You're ready to focus. Returning to dashboard...";
+    }
     
     return (
       <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
-        <CheckCircle2 className={`w-24 h-24 mb-8 ${isRegulated ? 'text-brand-gold' : 'text-brand-purple/50'}`} />
+        <CheckCircle2 className="w-24 h-24 text-brand-gold mb-8" />
         <h2 className="text-5xl font-drama font-bold text-brand-purple mb-4">
-          {isRegulated ? "Great job." : "Keep at it."}
+          {title}
         </h2>
         <p className="text-brand-text-muted text-lg font-medium">
-          {isRegulated 
-            ? "You took control. Returning to dashboard..." 
-            : "Regulation is a process. Try another tool when you're ready. Returning..."}
+          {subtitle}
         </p>
       </div>
     );
@@ -132,12 +148,12 @@ export const CalmNow: React.FC = () => {
 
             <div className="border-t border-brand-gold/10 pt-6">
               <h4 className="text-xs font-bold text-brand-text-muted uppercase tracking-widest mb-3">Micro Reframe</h4>
-              <p className="text-brand-purple font-drama italic text-2xl leading-tight">"This is a stress response, not a threat. I am safe."</p>
+              <p className="text-brand-purple font-drama italic text-2xl leading-tight">{getReframeText()}</p>
             </div>
 
             <div className="border-t border-brand-gold/10 pt-6">
               <h4 className="text-xs font-bold text-brand-text-muted uppercase tracking-widest mb-3">Physical Cue</h4>
-              <p className="text-brand-purple font-medium text-lg">Feet flat on the floor. Drop your shoulders.</p>
+              <p className="text-brand-purple font-medium text-lg">{getPhysicalCueText()}</p>
             </div>
           </div>
 
