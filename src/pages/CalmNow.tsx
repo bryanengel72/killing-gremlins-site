@@ -45,10 +45,21 @@ export const CalmNow: React.FC = () => {
   const trainingPhase = getTrainingPhase();
   const timelinePhase = appState.currentPhase;
 
-  const getAudioForStateA = () => {
-    if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A1_v1.0%20TP1%20Stabilization%20Focus.m4a';
-    if (trainingPhase === 'TP2') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A2_v1.0%20TP2%20Regulation%20Focus.mp3';
-    return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A3_v1.0%20TP3%20Execution%20Focus.m4a';
+  const getAudioForState = () => {
+    if (engineState.id === 'A') {
+      if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A1_v1.0%20TP1%20Stabilization%20Focus.m4a';
+      if (trainingPhase === 'TP2') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A2_v1.0%20TP2%20Regulation%20Focus.mp3';
+      return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A3_v1.0%20TP3%20Execution%20Focus.m4a';
+    }
+    if (engineState.id === 'B') {
+      if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20B/B1_v1.0%20TP1%20Stability%20Building.m4a';
+      if (trainingPhase === 'TP2') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20B/B2_v1.0%20TP2%20Interference%20Interruption.m4a';
+      return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20B/B3_v1.0%20TP3%20Efficient%20Execution%20Reset.m4a';
+    }
+    // State C
+    if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20C/C1_v1.0%20TP1%20Capacity%20Building.m4a';
+    if (trainingPhase === 'TP2') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20C/C2_v1.0%20TP2%20Performance%20Imagery-Regulated%20Under%20Pressure.m4a';
+    return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20C/C3_v1.0%20TP3%20Execution%20Identity%20Rehearsal.m4a';
   };
 
   const toggleAudio = () => {
@@ -91,37 +102,25 @@ export const CalmNow: React.FC = () => {
           </div>
 
           <div className="glass-panel rounded-[2.5rem] p-8 space-y-8">
-            {engineState.id === 'A' ? (
-              <>
-                <div className="flex items-center space-x-6">
-                  <button 
-                    onClick={toggleAudio}
-                    className="bg-brand-gold text-white p-5 rounded-full shadow-[0_15px_30px_-10px_rgba(201,160,48,0.5)] hover:bg-brand-gold-dark hover:scale-[1.03] transition-all"
-                  >
-                    {isPlaying ? <Pause className="w-8 h-8 ml-1" /> : <Play className="w-8 h-8 ml-1" />}
-                  </button>
-                  <div>
-                    <h3 className="font-bold text-brand-purple text-xl">Acute Reset Audio</h3>
-                    <p className="text-sm text-brand-text-muted font-medium mt-1">Focus: {trainingPhase}</p>
-                  </div>
-                </div>
-                <audio 
-                  ref={audioRef} 
-                  src={getAudioForStateA()} 
-                  onEnded={() => setIsPlaying(false)}
-                />
-              </>
-            ) : (
+            <>
               <div className="flex items-center space-x-6">
-                 <button className="bg-brand-purple text-white p-5 rounded-full shadow-lg transition-all opacity-50 cursor-not-allowed">
-                  <Play className="w-8 h-8 ml-1" />
+                <button 
+                  onClick={toggleAudio}
+                  className="bg-brand-gold text-white p-5 rounded-full shadow-[0_15px_30px_-10px_rgba(201,160,48,0.5)] hover:bg-brand-gold-dark hover:scale-[1.03] transition-all"
+                >
+                  {isPlaying ? <Pause className="w-8 h-8 ml-1" /> : <Play className="w-8 h-8 ml-1" />}
                 </button>
                 <div>
-                  <h3 className="font-bold text-brand-purple text-xl">Regulate Audio</h3>
-                  <p className="text-sm text-brand-text-muted font-medium mt-1">Coming soon for State {engineState.id}</p>
+                  <h3 className="font-bold text-brand-purple text-xl">Regulation Audio</h3>
+                  <p className="text-sm text-brand-text-muted font-medium mt-1">Focus: {trainingPhase}</p>
                 </div>
               </div>
-            )}
+              <audio 
+                ref={audioRef} 
+                src={getAudioForState()} 
+                onEnded={() => setIsPlaying(false)}
+              />
+            </>
 
             <div className="border-t border-brand-gold/10 pt-6">
               <h4 className="text-xs font-bold text-brand-text-muted uppercase tracking-widest mb-3">Micro Reframe</h4>
