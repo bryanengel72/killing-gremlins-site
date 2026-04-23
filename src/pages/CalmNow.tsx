@@ -4,6 +4,8 @@ import { ArrowLeft, Play, Pause, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { Disclaimer } from '../components/Disclaimer';
 
+import { supabase } from '../lib/supabase';
+
 export const CalmNow: React.FC = () => {
   const navigate = useNavigate();
   const { state: appState, logAnxiety, getTrainingPhase } = useAppContext();
@@ -27,8 +29,26 @@ export const CalmNow: React.FC = () => {
     setShowOutput(true);
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     logAnxiety(postScore);
+    
+    // Save to Supabase
+    if (appState.session?.user) {
+      const { error } = await supabase
+        .from('calm_now_logs')
+        .insert({
+          user_id: appState.session.user.id,
+          pre_score: preScore,
+          post_score: postScore,
+          engine_state: getEngineState(preScore).id,
+          training_phase: getTrainingPhase()
+        });
+
+      if (error) {
+        console.error("Failed to save Calm Now log:", error);
+      }
+    }
+
     setCompleted(true);
     setTimeout(() => {
       navigate('/app/home');
