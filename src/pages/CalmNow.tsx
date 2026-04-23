@@ -74,11 +74,19 @@ export const CalmNow: React.FC = () => {
   };
 
   if (completed) {
+    const isRegulated = postScore <= 5;
+    
     return (
-      <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-center p-6 text-center">
-        <CheckCircle2 className="w-24 h-24 text-brand-gold mb-8" />
-        <h2 className="text-5xl font-drama font-bold text-brand-purple mb-4">Great job.</h2>
-        <p className="text-brand-text-muted text-lg font-medium">You took control. Returning to dashboard...</p>
+      <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
+        <CheckCircle2 className={`w-24 h-24 mb-8 ${isRegulated ? 'text-brand-gold' : 'text-brand-purple/50'}`} />
+        <h2 className="text-5xl font-drama font-bold text-brand-purple mb-4">
+          {isRegulated ? "Great job." : "Keep at it."}
+        </h2>
+        <p className="text-brand-text-muted text-lg font-medium">
+          {isRegulated 
+            ? "You took control. Returning to dashboard..." 
+            : "Regulation is a process. Try another tool when you're ready. Returning..."}
+        </p>
       </div>
     );
   }
