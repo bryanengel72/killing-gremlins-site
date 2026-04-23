@@ -6,11 +6,10 @@ export const MyPhase: React.FC = () => {
   const { state } = useAppContext();
 
   const phases = [
-    { name: 'Preparation', desc: 'Weeks to months before exam' },
-    { name: 'Pre-exam', desc: '7 days out' },
-    { name: 'Exam day', desc: 'The big day' },
-    { name: 'Post-exam', desc: 'Decompression' },
-    { name: 'Waiting for results', desc: 'Managing uncertainty' },
+    { name: 'Foundation', desc: '57+ days before exam' },
+    { name: 'Consolidation', desc: '15-56 days before exam' },
+    { name: 'Performance', desc: '0-14 days before exam' },
+    { name: 'Recovery', desc: 'After exam' },
   ];
 
   return (

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { supabase } from '../lib/supabase';
 import { Session, User } from '@supabase/supabase-js';
 
-export type Phase = 'Preparation' | 'Pre-exam' | 'Exam day' | 'Post-exam' | 'Waiting for results' | 'Results day';
+export type Phase = 'Foundation' | 'Consolidation' | 'Performance' | 'Recovery';
 
 interface AnxietyLog {
   date: string;
@@ -46,6 +46,7 @@ interface AppContextType {
   logAnxiety: (score: number) => void;
   logConfidence: (score: number) => void;
   calculatePhase: () => void;
+  getTrainingPhase: () => 'TP1' | 'TP2' | 'TP3';
 }
 
 const initialState: AppState = {
@@ -68,7 +69,7 @@ const initialState: AppState = {
     anxietyScores: [],
     confidenceScores: [],
   },
-  currentPhase: 'Preparation',
+  currentPhase: 'Foundation',
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -216,22 +217,32 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     
     const examDate = new Date(state.examDetails.date);
     const today = new Date();
+    // Reset time portions for accurate day difference
+    examDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
     const diffTime = examDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    let phase: Phase = 'Preparation';
+    let phase: Phase = 'Foundation';
     if (diffDays < 0) {
-      if (diffDays === -1) phase = 'Post-exam';
-      else phase = 'Waiting for results';
-    } else if (diffDays === 0) {
-      phase = 'Exam day';
-    } else if (diffDays <= 7) {
-      phase = 'Pre-exam';
+      phase = 'Recovery';
+    } else if (diffDays <= 14) {
+      phase = 'Performance';
+    } else if (diffDays <= 56) {
+      phase = 'Consolidation';
     } else {
-      phase = 'Preparation';
+      phase = 'Foundation';
     }
 
     setState((prev) => ({ ...prev, currentPhase: phase }));
+  };
+
+  const getTrainingPhase = () => {
+    const wtas = state.assessments.baselineAnxiety;
+    if (wtas === null || wtas === undefined) return 'TP1'; // Default for MVP if assessment not taken
+    if (wtas >= 3.0) return 'TP1';
+    if (wtas >= 2.5) return 'TP2';
+    return 'TP3';
   };
 
   return (
@@ -246,6 +257,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         logAnxiety,
         logConfidence,
         calculatePhase,
+        getTrainingPhase,
       }}
     >
       {children}

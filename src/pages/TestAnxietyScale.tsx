@@ -28,7 +28,7 @@ const getCategory = (score: number) => {
 
 export const TestAnxietyScale: React.FC = () => {
   const navigate = useNavigate();
-  const { state } = useAppContext();
+  const { state, updateAssessments } = useAppContext();
   
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [resultScore, setResultScore] = useState<number | null>(null);
@@ -47,12 +47,14 @@ export const TestAnxietyScale: React.FC = () => {
     setIsSubmitting(true);
     setError("");
 
-    const total = Object.values(answers).reduce((sum, val) => sum + val, 0);
+    let total = 0;
+    Object.values(answers).forEach(val => { total += val; });
     const score = total / 10;
     const cat = getCategory(score);
 
     setResultScore(score);
     setCategory(cat);
+    updateAssessments({ baselineAnxiety: score });
 
     // Save to Supabase
     if (state.session?.user) {

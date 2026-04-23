@@ -21,6 +21,7 @@ import { ExamDay } from './pages/ExamDay';
 import { TermsOfService } from './pages/TermsOfService';
 import { DataUseAgreement } from './pages/DataUseAgreement';
 import { TestAnxietyScale } from './pages/TestAnxietyScale';
+import { SplashScreen } from './pages/SplashScreen';
 import { supabase } from './lib/supabase';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -87,7 +88,11 @@ export default function App() {
     <AppProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={
+            <PublicRoute>
+              <SplashScreen />
+            </PublicRoute>
+          } />
           <Route path="/login" element={
             <PublicRoute>
               <Login />
