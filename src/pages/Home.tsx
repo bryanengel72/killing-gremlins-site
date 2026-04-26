@@ -72,17 +72,17 @@ export const Home: React.FC = () => {
         <div className="grid grid-cols-2 gap-4">
           <Link
             to="/calm-now"
-            className="glass-panel rounded-2xl p-5 flex flex-col items-center justify-center text-center hover:scale-[1.03] transition-transform"
+            className="bg-brand-gold text-white shadow-lg shadow-brand-gold/30 rounded-2xl p-5 flex flex-col items-center justify-center text-center hover:scale-[1.03] hover:bg-brand-gold-dark transition-all"
           >
             <span className="text-3xl mb-3">🌬️</span>
-            <span className="font-bold text-brand-purple">Calm Now</span>
+            <span className="font-bold">Calm Now</span>
           </Link>
           <Link
             to="/exam-day"
-            className="glass-panel rounded-2xl p-5 flex flex-col items-center justify-center text-center hover:scale-[1.03] transition-transform"
+            className="bg-brand-gold text-white shadow-lg shadow-brand-gold/30 rounded-2xl p-5 flex flex-col items-center justify-center text-center hover:scale-[1.03] hover:bg-brand-gold-dark transition-all"
           >
             <span className="text-3xl mb-3">🎯</span>
-            <span className="font-bold text-brand-purple">Exam Day Mode</span>
+            <span className="font-bold">Exam Day Mode</span>
           </Link>
         </div>
       </section>
