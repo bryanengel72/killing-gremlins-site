@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Play, Pause, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Play, Pause, RefreshCw, CheckCircle2, RotateCcw } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { Disclaimer } from '../components/Disclaimer';
 
@@ -14,6 +14,8 @@ export const CalmNow: React.FC = () => {
   const [postScore, setPostScore] = useState(5);
   const [completed, setCompleted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -67,9 +69,9 @@ export const CalmNow: React.FC = () => {
 
   const getAudioForState = () => {
     if (engineState.id === 'A') {
-      if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A1_v1.0%20TP1%20Stabilization%20Focus.m4a';
+      if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A1_v1.0%20TP1%20Stabilization%20Focus.mp3';
       if (trainingPhase === 'TP2') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A2_v1.0%20TP2%20Regulation%20Focus.mp3';
-      return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A3_v1.0%20TP3%20Execution%20Focus.m4a';
+      return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A3_v1.0%20TP3%20Execution%20Focus.mp3';
     }
     if (engineState.id === 'B') {
       if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20B/B1_v1.0%20TP1%20Stability%20Building.m4a';
@@ -92,6 +94,19 @@ export const CalmNow: React.FC = () => {
     if (engineState.id === 'A') return 'Feet flat on the floor. Drop your shoulders.';
     if (engineState.id === 'B') return 'Take a deep breath and re-center your gaze.';
     return 'Sit up straight. Visualize your next successful step.';
+  };
+
+  const formatTime = (time: number) => {
+    if (isNaN(time)) return "0:00";
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const handleRewind = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = Math.max(0, audioRef.current.currentTime - 15);
+    }
   };
 
   const toggleAudio = () => {
@@ -147,22 +162,35 @@ export const CalmNow: React.FC = () => {
 
           <div className="glass-panel rounded-[2.5rem] p-8 space-y-8">
             <>
-              <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-4">
                 <button 
                   onClick={toggleAudio}
-                  className="bg-brand-gold text-white p-5 rounded-full shadow-[0_15px_30px_-10px_rgba(201,160,48,0.5)] hover:bg-brand-gold-dark hover:scale-[1.03] transition-all"
+                  className="bg-brand-gold text-white p-5 rounded-full shadow-[0_15px_30px_-10px_rgba(201,160,48,0.5)] hover:bg-brand-gold-dark hover:scale-[1.03] transition-all shrink-0"
                 >
-                  {isPlaying ? <Pause className="w-8 h-8 ml-1" /> : <Play className="w-8 h-8 ml-1" />}
+                  {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8 ml-1" />}
                 </button>
-                <div>
+                <button 
+                  onClick={handleRewind}
+                  className="bg-brand-purple/10 text-brand-purple p-3 rounded-full hover:bg-brand-purple/20 hover:scale-[1.03] transition-all shrink-0"
+                  title="Rewind 15 seconds"
+                >
+                  <RotateCcw className="w-6 h-6" />
+                </button>
+                <div className="pl-2">
                   <h3 className="font-bold text-brand-purple text-xl">Regulation Audio</h3>
-                  <p className="text-sm text-brand-text-muted font-medium mt-1">Focus: {trainingPhase}</p>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <p className="text-sm text-brand-text-muted font-medium">Focus: {trainingPhase}</p>
+                    <span className="text-brand-text-muted/50">•</span>
+                    <p className="text-sm font-bold text-brand-gold">{formatTime(currentTime)} / {formatTime(duration)}</p>
+                  </div>
                 </div>
               </div>
               <audio 
                 ref={audioRef} 
                 src={getAudioForState()} 
                 onEnded={() => setIsPlaying(false)}
+                onTimeUpdate={() => setCurrentTime(audioRef.current?.currentTime || 0)}
+                onLoadedMetadata={() => setDuration(audioRef.current?.duration || 0)}
               />
             </>
 
