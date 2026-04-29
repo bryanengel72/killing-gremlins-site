@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { format } from 'date-fns';
 import { UserCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -120,6 +120,7 @@ export const Home: React.FC = () => {
               <Tooltip
                 contentStyle={{ borderRadius: '1rem', border: '1px solid rgba(201,160,48,0.2)', backgroundColor: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(12px)' }}
               />
+              <Legend verticalAlign="top" height={36} iconType="circle" wrapperStyle={{ fontSize: '12px', fontWeight: 'bold', color: '#4A3A8A' }} />
               <Line type="monotone" name="Pre-Exercise" dataKey="preScore" stroke="#4A3A8A" strokeWidth={3} dot={{ r: 4, fill: '#4A3A8A', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
               <Line type="monotone" name="Post-Exercise" dataKey="postScore" stroke="#C9A030" strokeWidth={3} dot={{ r: 4, fill: '#C9A030', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
             </LineChart>
