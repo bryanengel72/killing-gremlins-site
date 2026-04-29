@@ -153,11 +153,7 @@ export const CalmNow: React.FC = () => {
         <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full space-y-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-brand-purple mb-2 tracking-tight">Your Regulation Pack</h2>
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
-              <span className="bg-brand-purple/10 text-brand-purple text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">{engineState.name}</span>
-              <span className="bg-brand-gold/10 text-brand-gold-dark text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">{trainingPhase} Tone</span>
-              <span className="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">{timelinePhase}</span>
-            </div>
+
           </div>
 
           <div className="glass-panel rounded-[2.5rem] p-8 space-y-8">
@@ -179,8 +175,6 @@ export const CalmNow: React.FC = () => {
                 <div className="pl-2">
                   <h3 className="font-bold text-brand-purple text-xl">Regulation Audio</h3>
                   <div className="flex items-center space-x-2 mt-1">
-                    <p className="text-sm text-brand-text-muted font-medium">Focus: {trainingPhase}</p>
-                    <span className="text-brand-text-muted/50">•</span>
                     <p className="text-sm font-bold text-brand-gold">{formatTime(currentTime)} / {formatTime(duration)}</p>
                   </div>
                 </div>

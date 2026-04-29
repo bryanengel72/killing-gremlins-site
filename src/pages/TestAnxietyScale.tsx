@@ -58,6 +58,7 @@ export const TestAnxietyScale: React.FC = () => {
 
     // Save to Supabase
     if (state.session?.user) {
+      // 1. Save the specific test response
       const { error: dbError } = await supabase
         .from('test_anxiety_responses')
         .insert({
@@ -70,6 +71,20 @@ export const TestAnxietyScale: React.FC = () => {
       if (dbError) {
         console.error("Failed to save to Supabase:", dbError);
         setError("Your local score was calculated, but we could not save it to your profile. Did you create the table in Supabase?");
+      }
+
+      // 2. Update user metadata so the app remembers their baseline anxiety for training phases
+      const { error: metaError } = await supabase.auth.updateUser({
+        data: {
+          assessments: {
+            ...state.assessments,
+            baselineAnxiety: score
+          }
+        }
+      });
+
+      if (metaError) {
+        console.error("Failed to update user metadata:", metaError);
       }
     } else {
       setError("You must be logged in to save your score.");

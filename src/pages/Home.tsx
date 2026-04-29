@@ -4,19 +4,42 @@ import { useAppContext } from '../context/AppContext';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { format } from 'date-fns';
 import { UserCircle } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 export const Home: React.FC = () => {
   const { state, calculatePhase } = useAppContext();
 
+  const [dbLogs, setDbLogs] = useState<any[]>([]);
+
   useEffect(() => {
     calculatePhase();
-  }, []);
+    
+    const fetchLogs = async () => {
+      if (state.authUser?.id) {
+        const { data, error } = await supabase
+          .from('calm_now_logs')
+          .select('created_at, pre_score, post_score')
+          .eq('user_id', state.authUser.id)
+          .order('created_at', { ascending: true });
+          
+        if (error) {
+          console.error("Error fetching calm_now_logs:", error);
+        }
+        if (data) {
+          setDbLogs(data);
+        }
+      }
+    };
+    
+    fetchLogs();
+  }, [state.authUser?.id]);
 
   const chartData = [
-    { name: 'Baseline', score: state.assessments.baselineAnxiety || 0 },
-    ...state.logs.anxietyScores.map((log) => ({
-      name: format(new Date(log.date), 'MMM d'),
-      score: log.score,
+    { name: 'Baseline', preScore: state.assessments.baselineAnxiety || 0, postScore: state.assessments.baselineAnxiety || 0 },
+    ...dbLogs.map((log) => ({
+      name: format(new Date(log.created_at), 'MMM d, h:mm a'),
+      preScore: log.pre_score,
+      postScore: log.post_score,
     })),
   ];
 
@@ -92,12 +115,13 @@ export const Home: React.FC = () => {
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#4A3A8A', fontFamily: 'IBM Plex Mono' }} dy={10} />
+              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#4A3A8A', fontFamily: 'IBM Plex Mono' }} dy={10} angle={-15} textAnchor="end" height={60} />
               <YAxis domain={[0, 10]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#4A3A8A', fontFamily: 'IBM Plex Mono' }} dx={-10} />
               <Tooltip
                 contentStyle={{ borderRadius: '1rem', border: '1px solid rgba(201,160,48,0.2)', backgroundColor: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(12px)' }}
               />
-              <Line type="monotone" dataKey="score" stroke="#C9A030" strokeWidth={3} dot={{ r: 4, fill: '#C9A030', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
+              <Line type="monotone" name="Pre-Exercise" dataKey="preScore" stroke="#4A3A8A" strokeWidth={3} dot={{ r: 4, fill: '#4A3A8A', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
+              <Line type="monotone" name="Post-Exercise" dataKey="postScore" stroke="#C9A030" strokeWidth={3} dot={{ r: 4, fill: '#C9A030', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
