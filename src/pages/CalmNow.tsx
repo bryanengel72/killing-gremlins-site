@@ -69,19 +69,19 @@ export const CalmNow: React.FC = () => {
 
   const getAudioForState = () => {
     if (engineState.id === 'A') {
-      if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A1_v1.0%20TP1%20Stabilization%20Focus.mp3';
-      if (trainingPhase === 'TP2') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A2_v1.0%20TP2%20Regulation%20Focus.mp3';
-      return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A3_v1.0%20TP3%20Execution%20Focus.mp3';
+      if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A1_v1.0%20TP1%20Stabilization%20Focus%20(1).mp3';
+      if (trainingPhase === 'TP2') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A2_v1.0%20TP2%20Regulation%20Focus%20(1).mp3';
+      return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20A/A3_v1.0%20TP3%20Execution%20Focus%20(1).mp3';
     }
     if (engineState.id === 'B') {
-      if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20B/B1_v1.0%20TP1%20Stability%20Building.m4a';
-      if (trainingPhase === 'TP2') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20B/B2_v1.0%20TP2%20Interference%20Interruption.m4a';
-      return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20B/B3_v1.0%20TP3%20Efficient%20Execution%20Reset.m4a';
+      if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20B/B1_v1.0%20TP1%20Stability%20Building.mp3';
+      if (trainingPhase === 'TP2') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20B/B2_v1.0%20TP2%20Interference%20Interruption.mp3';
+      return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20B/B3_v1.0%20TP3%20Efficient%20Execution%20Reset.mp3';
     }
     // State C
-    if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20C/C1_v1.0%20TP1%20Capacity%20Building.m4a';
-    if (trainingPhase === 'TP2') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20C/C2_v1.0%20TP2%20Performance%20Imagery-Regulated%20Under%20Pressure.m4a';
-    return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20C/C3_v1.0%20TP3%20Execution%20Identity%20Rehearsal.m4a';
+    if (trainingPhase === 'TP1') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20C/C1_v1.0%20TP1%20Capacity%20Building.mp3';
+    if (trainingPhase === 'TP2') return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20C/C2_v1.0%20TP2%20Performance%20Imagery-Regulated%20Under%20Pressure.mp3';
+    return 'https://pjqbvfpzidqupuaiaqdy.supabase.co/storage/v1/object/public/audio/Calm%20Now/State%20C/C3_v1.0%20TP3%20Execution%20Identity%20Rehearsal.mp3';
   };
 
   const getReframeText = () => {
