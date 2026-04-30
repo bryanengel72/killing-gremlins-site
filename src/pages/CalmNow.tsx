@@ -18,7 +18,6 @@ export const CalmNow: React.FC = () => {
   
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [showFullScript, setShowFullScript] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -247,7 +246,6 @@ export const CalmNow: React.FC = () => {
           </div>
 
           <div className="flex justify-center space-x-2 text-xs font-bold text-brand-purple uppercase tracking-wider">
-            <span className="bg-brand-purple/10 px-3 py-1 rounded-full border border-brand-purple/20">Phase: {timelinePhase}</span>
             <span className="bg-brand-purple/10 px-3 py-1 rounded-full border border-brand-purple/20">Focus: {getTrainingFocus()}</span>
           </div>
 
@@ -274,11 +272,6 @@ export const CalmNow: React.FC = () => {
               <p className="text-brand-purple font-medium">{copy.physicalCue}</p>
             </div>
 
-            {showFullScript && (
-              <div className="border-t border-brand-gold/10 pt-4 animate-in slide-in-from-top-2">
-                <p className="text-sm text-brand-text-muted leading-relaxed">{copy.expandedText}</p>
-              </div>
-            )}
           </div>
 
           <audio 
@@ -302,12 +295,6 @@ export const CalmNow: React.FC = () => {
                 className="w-full bg-white border border-brand-gold/30 text-brand-gold py-4 rounded-2xl font-bold hover:bg-brand-gold/5 transition-colors"
               >
                 Try a different reset
-              </button>
-              <button
-                onClick={() => setShowFullScript(!showFullScript)}
-                className="w-full text-brand-text-muted font-medium py-2 hover:text-brand-purple transition-colors text-sm"
-              >
-                {showFullScript ? 'Hide full script' : 'Show full script'}
               </button>
             </div>
           ) : (
@@ -336,12 +323,6 @@ export const CalmNow: React.FC = () => {
               <p className="text-center text-xs text-brand-text-muted font-medium">Audio continues if you leave the app</p>
 
               <div className="pt-2">
-                <button
-                  onClick={() => setShowFullScript(!showFullScript)}
-                  className="w-full text-brand-text-muted font-medium pb-4 hover:text-brand-purple transition-colors text-sm"
-                >
-                  {showFullScript ? 'Hide full script' : 'Show full script'}
-                </button>
                 <button
                   onClick={() => setUiState('completion')}
                   className="w-full bg-brand-purple text-white py-3 rounded-xl font-bold hover:bg-brand-purple-dark transition-colors shadow-lg shadow-brand-purple/20"
