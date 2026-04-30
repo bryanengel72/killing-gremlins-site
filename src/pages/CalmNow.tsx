@@ -245,9 +245,6 @@ export const CalmNow: React.FC = () => {
             <p className="text-brand-text-muted font-medium mt-1">A quick reset for right now</p>
           </div>
 
-          <div className="flex justify-center space-x-2 text-xs font-bold text-brand-purple uppercase tracking-wider">
-            <span className="bg-brand-purple/10 px-3 py-1 rounded-full border border-brand-purple/20">Focus: {getTrainingFocus()}</span>
-          </div>
 
           <div className="glass-panel rounded-[2.5rem] p-6 space-y-5 shadow-xl shadow-brand-gold/5">
             <div className="text-center">
