@@ -100,10 +100,10 @@ export const Home: React.FC = () => {
             <span className="font-bold text-xl">Calm Now</span>
           </Link>
           <Link
-            to="/exam-day"
+            to="/exam-week"
             className="bg-brand-gold text-brand-purple shadow-lg shadow-brand-gold/30 rounded-2xl py-8 px-4 flex flex-col items-center justify-center text-center hover:scale-[1.03] hover:bg-brand-gold-dark transition-all"
           >
-            <span className="font-bold text-xl">Exam Day Mode</span>
+            <span className="font-bold text-xl">Exam Week</span>
           </Link>
         </div>
       </section>

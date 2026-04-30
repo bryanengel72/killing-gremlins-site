@@ -22,9 +22,10 @@ interface AppState {
     date: string | null;
   };
   assessments: {
-    baselineAnxiety: number | null;
-    focusPattern: string;
-    testTakingTendency: string;
+    baselineAnxiety: number | null; // WTAS (1.0 - 5.0)
+    anxietySliderScore: number | null; // Slider (1-10)
+    confidenceScore: number | null; // Slider (1-10)
+    adhdScreener: boolean | null;
   };
   toolbox: {
     pinnedItems: string[];
@@ -47,6 +48,7 @@ interface AppContextType {
   logConfidence: (score: number) => void;
   calculatePhase: () => void;
   getTrainingPhase: () => 'TP1' | 'TP2' | 'TP3';
+  getExamWeekStage: () => 'Consolidation' | 'Narrowing' | 'Preservation' | 'Execution' | null;
 }
 
 const initialState: AppState = {
@@ -59,8 +61,9 @@ const initialState: AppState = {
   },
   assessments: {
     baselineAnxiety: null,
-    focusPattern: '',
-    testTakingTendency: '',
+    anxietySliderScore: null,
+    confidenceScore: null,
+    adhdScreener: null,
   },
   toolbox: {
     pinnedItems: [],
@@ -133,8 +136,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
           },
           assessments: {
             ...prev.assessments,
-            focusPattern: profile.focus_pattern || prev.assessments.focusPattern,
-            testTakingTendency: profile.test_taking_tendency || prev.assessments.testTakingTendency,
+            anxietySliderScore: profile.anxiety_slider_score || prev.assessments.anxietySliderScore,
+            confidenceScore: profile.confidence_score || prev.assessments.confidenceScore,
+            adhdScreener: profile.adhd_screener !== undefined ? profile.adhd_screener : prev.assessments.adhdScreener,
           }
         }));
       }
@@ -245,6 +249,23 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return 'TP3';
   };
 
+  const getExamWeekStage = () => {
+    if (!state.examDetails.date) return null;
+    const examDate = new Date(state.examDetails.date);
+    const today = new Date();
+    // Reset time portions for accurate day difference
+    examDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    const diffTime = examDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays >= 5 && diffDays <= 7) return 'Consolidation'; // -7 to -5
+    if (diffDays >= 2 && diffDays <= 4) return 'Narrowing'; // -4 to -2
+    if (diffDays === 1) return 'Preservation'; // -1
+    if (diffDays === 0) return 'Execution'; // morning of
+    return null;
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -258,6 +279,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         logConfidence,
         calculatePhase,
         getTrainingPhase,
+        getExamWeekStage,
       }}
     >
       {children}

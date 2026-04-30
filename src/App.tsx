@@ -17,7 +17,7 @@ import { Learn } from './pages/Learn';
 import { Toolbox } from './pages/Toolbox';
 import { Profile } from './pages/Profile';
 import { CalmNow } from './pages/CalmNow';
-import { ExamDay } from './pages/ExamDay';
+import { ExamWeek } from './pages/ExamWeek';
 import { TermsOfService } from './pages/TermsOfService';
 import { DataUseAgreement } from './pages/DataUseAgreement';
 import { TestAnxietyScale } from './pages/TestAnxietyScale';
@@ -135,9 +135,9 @@ export default function App() {
               <CalmNow />
             </ProtectedRoute>
           } />
-          <Route path="/exam-day" element={
+          <Route path="/exam-week" element={
             <ProtectedRoute>
-              <ExamDay />
+              <ExamWeek />
             </ProtectedRoute>
           } />
         </Routes>

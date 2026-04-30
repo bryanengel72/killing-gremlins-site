@@ -12,8 +12,8 @@ export const Onboarding: React.FC = () => {
   const [examType, setExamType] = useState('');
   const [examDate, setExamDate] = useState('');
   const [anxietyScore, setAnxietyScore] = useState(5);
-  const [focusPattern, setFocusPattern] = useState('');
-  const [tendency, setTendency] = useState('');
+  const [confidenceScore, setConfidenceScore] = useState<number>(5);
+  const [adhdScreener, setAdhdScreener] = useState<boolean | null>(null);
   const [consent, setConsent] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -31,9 +31,9 @@ export const Onboarding: React.FC = () => {
         // Update local state
         updateExamDetails({ type: examType, date: examDate });
         updateAssessments({
-          baselineAnxiety: anxietyScore,
-          focusPattern,
-          testTakingTendency: tendency,
+          anxietySliderScore: anxietyScore,
+          confidenceScore,
+          adhdScreener,
         });
         calculatePhase();
 
@@ -45,8 +45,9 @@ export const Onboarding: React.FC = () => {
             name: state.user?.name,
             exam_type: examType,
             exam_date: examDate,
-            focus_pattern: focusPattern,
-            test_taking_tendency: tendency,
+            anxiety_slider_score: anxietyScore,
+            confidence_score: confidenceScore,
+            adhd_screener: adhdScreener,
             updated_at: new Date().toISOString(),
           });
 
@@ -57,16 +58,17 @@ export const Onboarding: React.FC = () => {
             data: {
               examDetails: { type: examType, date: examDate },
               assessments: { 
-                baselineAnxiety: anxietyScore,
-                focusPattern, 
-                testTakingTendency: tendency 
+                anxietySliderScore: anxietyScore,
+                confidenceScore, 
+                adhdScreener 
               }
             }
           });
           if (metaError) throw metaError;
         }
 
-        navigate('/app/home');
+        // Navigate to WTAS baseline test instead of home
+        navigate('/test-anxiety-scale');
       } catch (err) {
         console.error('Failed to save onboarding data:', err);
         alert('Failed to save your details. Please try again.');
@@ -153,33 +155,49 @@ export const Onboarding: React.FC = () => {
 
           {step === 4 && (
             <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-brand-purple tracking-tight">Your Tendencies</h2>
-              <div>
-                <label className="block text-sm font-bold text-brand-purple mb-2">Focus Pattern</label>
-                <select
-                  className="block w-full px-4 py-3 text-base border border-brand-gold/30 text-brand-purple focus:outline-none focus:ring-2 focus:ring-brand-gold focus:border-transparent rounded-xl bg-white/80"
-                  value={focusPattern}
-                  onChange={(e) => setFocusPattern(e.target.value)}
-                >
-                  <option value="">Select...</option>
-                  <option value="visual">Visual</option>
-                  <option value="audio">Audio</option>
-                  <option value="text">Text</option>
-                </select>
+              <h2 className="text-3xl font-bold text-brand-purple tracking-tight">Your Confidence</h2>
+              
+              <div className="space-y-4">
+                <label className="block text-sm font-bold text-brand-purple mb-2">
+                  On a scale of 1-10, how confident do you feel about your upcoming exam?
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value={confidenceScore}
+                  onChange={(e) => setConfidenceScore(Number(e.target.value))}
+                  className="w-full accent-brand-gold"
+                />
+                <div className="text-center font-bold text-4xl text-brand-gold">{confidenceScore}</div>
               </div>
-              <div>
-                <label className="block text-sm font-bold text-brand-purple mb-2">Test-Taking Tendency</label>
-                <select
-                  className="block w-full px-4 py-3 text-base border border-brand-gold/30 text-brand-purple focus:outline-none focus:ring-2 focus:ring-brand-gold focus:border-transparent rounded-xl bg-white/80"
-                  value={tendency}
-                  onChange={(e) => setTendency(e.target.value)}
-                >
-                  <option value="">Select...</option>
-                  <option value="overthinker">Overthinker</option>
-                  <option value="freezer">Freezer</option>
-                  <option value="rusher">Rusher</option>
-                  <option value="perfectionist">Perfectionist</option>
-                </select>
+
+              <div className="pt-6 border-t border-brand-purple/10">
+                <label className="block text-sm font-bold text-brand-purple mb-4">
+                  Optional: Have you ever been diagnosed with ADHD or do you struggle significantly with executive function?
+                </label>
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => setAdhdScreener(true)}
+                    className={`flex-1 py-3 px-4 rounded-xl font-bold transition-colors ${
+                      adhdScreener === true
+                        ? 'bg-brand-purple text-white'
+                        : 'bg-white border border-brand-purple/20 text-brand-purple hover:bg-brand-purple/5'
+                    }`}
+                  >
+                    Yes
+                  </button>
+                  <button
+                    onClick={() => setAdhdScreener(false)}
+                    className={`flex-1 py-3 px-4 rounded-xl font-bold transition-colors ${
+                      adhdScreener === false
+                        ? 'bg-brand-purple text-white'
+                        : 'bg-white border border-brand-purple/20 text-brand-purple hover:bg-brand-purple/5'
+                    }`}
+                  >
+                    No
+                  </button>
+                </div>
               </div>
             </div>
           )}
